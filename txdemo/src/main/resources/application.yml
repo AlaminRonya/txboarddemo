@@ -1,0 +1,26 @@
+## Application name
+spring:
+  application:
+    name: txdemo
+
+  profiles:
+    active: pg
+
+
+
+app:
+  title: My %s Boot Application
+  description: This is a sample application.
+
+server:
+  port: 8585
+
+
+sdlc.pro.spring.tx.board:
+  enable: true
+  alarming-threshold:
+    transaction: 1000
+    connection: 1000
+  storage: IN_MEMORY
+  enable-listener-log: true
+  duration-buckets: [ 100, 500, 1000, 2000, 5000 ]
