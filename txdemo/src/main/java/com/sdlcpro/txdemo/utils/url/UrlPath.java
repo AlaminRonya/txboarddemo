@@ -24,5 +24,14 @@ public interface UrlPath {
         String USER_INFO_PAGINATION = PAGINATION;
     }
 
+    interface Transaction {
+        String ROOT_PATH = BASE_PATH + VERSION + "transactions";
+        String TRANSACTION_IDENTIFIER = IDENTIFIER_ID;
+        String TRANSACTION_PAGINATION = PAGINATION;
+        String TRANSACTION_SEARCHING_PAGINATION = PAGINATION + SEPARATOR + "searching";
+        String TRANSACTION_DEBIT= SEPARATOR + "debit";
+        String TRANSACTION_CREDIT = SEPARATOR + "credit";
+    }
+
 
 }

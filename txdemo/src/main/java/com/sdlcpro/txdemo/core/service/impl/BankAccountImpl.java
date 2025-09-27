@@ -4,6 +4,8 @@ import com.sdlcpro.txdemo.common.PageableDto;
 import com.sdlcpro.txdemo.core.dto.BankAccountDto;
 import com.sdlcpro.txdemo.core.mapper.ResponseBankAccountMapper;
 import com.sdlcpro.txdemo.core.param.BankAccountParam;
+import com.sdlcpro.txdemo.core.param.FundTransferParam;
+import com.sdlcpro.txdemo.core.param.TransactionParam;
 import com.sdlcpro.txdemo.core.service.BankAccountService;
 import com.sdlcpro.txdemo.core.service.client.FundServiceClient;
 import com.sdlcpro.txdemo.core.service.client.UserServiceClient;
@@ -90,48 +92,48 @@ public class BankAccountImpl extends AbstractBaseService<BankAccount, UUID> impl
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public void credit(String accountNumber, Double amount) {
+    public void credit(TransactionParam param) {
 
-        validateAccountNumber(accountNumber);
+        validateAccountNumber(param.accountNumber());
 
-        validateAmount(amount, "credit");
+        validateAmount(param.amount(), "credit");
 
-        var bankAccount = getBankAccountByAccountNumber(accountNumber);
+        var bankAccount = getBankAccountByAccountNumber(param.accountNumber());
 
-        bankAccount.setBalance(bankAccount.getBalance() + amount);
+        bankAccount.setBalance(bankAccount.getBalance() + param.amount());
     }
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public void debit(String accountNumber, Double amount) {
+    public void debit(TransactionParam param) {
 
-        validateAccountNumber(accountNumber);
+        validateAccountNumber(param.accountNumber());
 
-        validateAmount(amount, "debit");
+        validateAmount(param.amount(), "debit");
 
-        var bankAccount = getBankAccountByAccountNumber(accountNumber);
+        var bankAccount = getBankAccountByAccountNumber(param.accountNumber());
 
-        if (bankAccount.getBalance() < amount) {
+        if (bankAccount.getBalance() < param.amount()) {
 
-            throw new IllegalArgumentException(i18n("insufficient.funds.in.account.x0",accountNumber));
+            throw new IllegalArgumentException(i18n("insufficient.funds.in.account.x0", param.accountNumber()));
         }
 
-        bankAccount.setBalance(bankAccount.getBalance() - amount);
+        bankAccount.setBalance(bankAccount.getBalance() - param.amount());
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
-    public void transferFunds(String fromAccount, String toAccount, Double amount) {
+    @Transactional(propagation = Propagation.MANDATORY)
+    public void transferFunds(FundTransferParam param) {
 
-        validateAccountNumber(fromAccount);
+        validateAccountNumber(param.fromAccountNumber());
 
-        validateAccountNumber(toAccount);
+        validateAccountNumber(param.toAccountNumber());
 
-        validateAmount(amount, "fund");
+        validateAmount(param.amount(), "fund");
 
-        debit(fromAccount, amount);
+        debit(new TransactionParam(param.fromAccountNumber(), param.amount()));
 
-        credit(toAccount, amount);
+        credit(new TransactionParam(param.toAccountNumber(), param.amount()));
     }
 
     @Override
