@@ -26,6 +26,7 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity<ErrorResponseDto<Object>> handleServiceException(ServiceException ex) {
+
         log.error("ServiceException occurred: {}", ex.getMessage(), ex);
         ErrorResponseDto<Object> body = new ErrorResponseDto<>(
                 INTERNAL_SERVER_ERROR.value(),
@@ -39,6 +40,7 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponseDto<Object>> handleIllegalArgument(IllegalArgumentException ex) {
+
         log.warn("IllegalArgumentException: {}", ex.getMessage(), ex);
         ErrorResponseDto<Object> body = new ErrorResponseDto<>(
                 BAD_REQUEST.value(),
