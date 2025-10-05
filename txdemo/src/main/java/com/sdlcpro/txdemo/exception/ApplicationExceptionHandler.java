@@ -59,11 +59,6 @@ public class ApplicationExceptionHandler {
                 .message(ex.getMessage())
                 .build();
         log.info("BusinessException: {}", payload);
-        log.info("BusinessException: {}", payload);
-        log.info("BusinessException: {}", payload);
-        log.info("BusinessException: {}", payload);
-        log.info("BusinessException: {}", payload);
-        log.info("BusinessException: {}", payload);
         log.debug("Stack trace:", ex);
 
         ErrorResponseDto<ErrorFieldValidationResponse> body = new ErrorResponseDto<>(
