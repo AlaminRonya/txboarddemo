@@ -87,8 +87,6 @@ public class ApplicationExceptionHandler {
                 .validationErrors(errors)
                 .build();
         log.warn("Validation failed: {}", errors);
-        log.warn("Validation failed: {}", errors);
-
         ErrorResponseDto<ErrorFieldValidationResponse> body = new ErrorResponseDto<>(
                 BAD_REQUEST.value(),
                 BAD_REQUEST.name(),
