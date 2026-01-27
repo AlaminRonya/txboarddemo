@@ -1,26 +1,35 @@
-## Application name
 spring:
   application:
     name: txdemo
 
-  profiles:
-    active: pg
+  config:
+    import: optional:file:.env[.properties]
 
+  datasource:
+    url: jdbc:postgresql://${DB_URL}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
 
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 1000
+        order_inserts: true
+        order_updates: true
 
-app:
-  title: My %s Boot Application
-  description: This is a sample application.
+  batch:
+    jdbc:
+      initialize-schema: always   # ✅ CORRECT PLACE
+    job:
+      enabled: false              # runtime trigger via API
 
 server:
   port: 8585
-
-
-sdlc.pro.spring.tx.board:
-  enable: true
-  alarming-threshold:
-    transaction: 1000
-    connection: 1000
-  storage: IN_MEMORY
-  enable-listener-log: true
-  duration-buckets: [ 100, 500, 1000, 2000, 5000 ]
