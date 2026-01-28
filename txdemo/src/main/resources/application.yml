@@ -13,7 +13,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
@@ -26,10 +26,16 @@ spring:
         order_updates: true
 
   batch:
+    schema: classpath:org/springframework/batch/core/schema-postgresql.sql
     jdbc:
-      initialize-schema: always   # ✅ CORRECT PLACE
+      initialize-schema: always
     job:
-      enabled: false              # runtime trigger via API
+      enabled: false
 
 server:
   port: 8585
+
+
+logging:
+  level:
+    org.springframework.batch: DEBUG
